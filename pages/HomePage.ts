@@ -2,6 +2,7 @@ import { expect, type Locator, type Page } from '@playwright/test';
 
 export class HomePage {
   readonly page: Page;
+  readonly acceptAllCookies: Locator;
   readonly catCategory: Locator;
   readonly catsDryFood: Locator;
   readonly royalCaninBrand: Locator;
@@ -9,6 +10,7 @@ export class HomePage {
 
   constructor(page: Page) {
     this.page = page;
+    this.acceptAllCookies = page.locator('[class*="accept button"]');
     this.catCategory = page.locator('#cat').nth(1);
     this.catsDryFood = page.locator('a[href="/catalog/koshki/korm/sukhoy-korm/"]').nth(1);
     this.royalCaninBrand = page.locator('[title="Royal Canin"]');
@@ -18,7 +20,9 @@ export class HomePage {
   async goto() {
     await this.page.goto('/');
   }
-  
+  async acceptCookies() {
+    await this.acceptAllCookies.click();
+  }
   async gotoCategory() {
     await this.catCategory.click();
   }
