@@ -7,11 +7,11 @@ export class CatalogPage extends BasePage {
   readonly page: Page;
   readonly deliveryOption: Function;
   readonly firstProductCard: Locator;
-  readonly productTitle: Locator;
+  readonly firstProductTitle: Locator;
   readonly productTitles: Locator;
   readonly productPrice: Locator;
   readonly filterCheckboxByName: Function;
-  readonly addToCart: Locator;
+  readonly firstAddToCart: Locator;
   readonly cartButton: Locator;
 
   
@@ -20,12 +20,12 @@ export class CatalogPage extends BasePage {
     this.page = page;
     this.deliveryOption = (option: string) => page.locator(`[class="choose-user-delivery-type "]:has-text("${option}")`);
     this.firstProductCard = page.locator('[class*="product viewed"]').nth(0);
-    this.productTitle =  this.firstProductCard.locator('[class*="product__info"] p[class=h4]');
+    this.firstProductTitle =  this.firstProductCard.locator('[class*="product__info"] p[class=h4]');
     this.productTitles = this.page.locator('[class*="product viewed"]').locator('[class*="product__info"] p.h4');
     this.productPrice = this.firstProductCard.locator('[class*="price-block"]');
     this.filterCheckboxByName = (name: string) => page.locator(`.form-group :text-is("${name}")`);
 
-    this.addToCart = this.firstProductCard.locator('[class*="product__basket-action"]:has-text("В корзину")');
+    this.firstAddToCart = this.firstProductCard.locator('[class*="product__basket-action"]:has-text("В корзину")');
     this.cartButton = page.locator('[class="name"]:has-text("Корзина")');
   }
 
@@ -45,12 +45,12 @@ export class CatalogPage extends BasePage {
 }
 
   async addFirstFilteredProductToCart(): Promise<{ title: string, price: string }> {
-    const title = await this.productTitle.innerText();
+    const title = await this.firstProductTitle.innerText();
 
     const rawPrice = await this.productPrice.innerText();
     const price = normalizePrice(rawPrice);
  
-    await this.addToCart.click();
+    await this.firstAddToCart.click();
     return { title, price };
   }
 }

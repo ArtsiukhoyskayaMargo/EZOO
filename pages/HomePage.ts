@@ -1,10 +1,11 @@
 import { Page } from '@playwright/test';
+import { BasePage } from './BasePage';
 
-export class HomePage {
-  readonly page: Page;
+export class HomePage extends BasePage {
+  
   
   constructor(page: Page) {
-    this.page = page;
+    super(page);
   }
 
   async goto() {
