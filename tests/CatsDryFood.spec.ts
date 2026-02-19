@@ -1,41 +1,34 @@
 import { test, expect } from '@playwright/test';
-import { CatalogPage } from '../pages/CatalogPage';
-import { CartPage } from '../pages/CartPage';
-import { HomePage } from '../pages/HomePage';
 import { normalizePrice } from '../utils/helpers';
+import { PageManager } from '../pages/PageManager';
 
-let homePage: HomePage;
-let catalogPage: CatalogPage;
-let cartPage: CartPage;
+let pageManager: PageManager;
 
 test.beforeEach(async ({ page }) => {
-  homePage = new HomePage(page);
-  catalogPage = new CatalogPage(page);
-  cartPage = new CartPage(page);
-  
-  await homePage.goto();
-  await homePage.acceptCookies();
-  await homePage.openCategoryMenu('cat');
-  await homePage.openMenuItem('/catalog/koshki/korm/sukhoy-korm/');
-  await catalogPage.filterBy('Royal Canin');
+  pageManager = new PageManager(page);
+  await pageManager.homePage.goto();
+  await pageManager.homePage.acceptCookies();
+  await pageManager.homePage.openCategoryMenu('cat');
+  await pageManager.homePage.openMenuItem('/catalog/koshki/korm/sukhoy-korm/');
+  await pageManager.catalogPage.filterBy('Royal Canin');
 });
 
 
 test('01 The filter was applied', async ({ page }) => {
-  await catalogPage.isFilteredBy('Royal Canin');
+  await pageManager.catalogPage.isFilteredBy('Royal Canin');
 });
 
 test('02 Verify the selected product is in the cart', async ({ page }) => {
-  await catalogPage.isFilteredBy('Royal Canin');
+  await pageManager.catalogPage.isFilteredBy('Royal Canin');
   
-  const { title, price } = await catalogPage.addFirstFilteredProductToCart();
+  const { title, price } = await pageManager.catalogPage.addFirstFilteredProductToCart();
   
-  await catalogPage.selectDeliveryOption('Доставка курьером');
-  await catalogPage.firstAddToCart.click();
-  await catalogPage.cartButton.click();
+  await pageManager.catalogPage.selectDeliveryOption('Доставка курьером');
+  await pageManager.catalogPage.firstAddToCart.click();
+  await pageManager.catalogPage.cartButton.click();
 
-  await expect(cartPage.cartItemContainerByName(title)).toBeVisible();
-  const normalizedPrice = normalizePrice(await cartPage.getItemPrice(title));
+  await expect(pageManager.cartPage.cartItemContainerByName(title)).toBeVisible();
+  const normalizedPrice = normalizePrice(await pageManager.cartPage.getItemPrice(title));
 
   await expect(normalizedPrice).toBe(price);
 });
