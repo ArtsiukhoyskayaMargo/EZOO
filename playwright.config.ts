@@ -4,14 +4,15 @@ import { defineConfig, devices } from '@playwright/test';
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
  */
-// import dotenv from 'dotenv';
 // import path from 'path';
-// dotenv.config({ path: path.resolve(__dirname, '.env') });
+import dotenv from 'dotenv';
+dotenv.config();
 
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
+  globalSetup: './auth/login.setup.ts',
   testDir: './tests',
   /* Run tests in files in parallel */
   fullyParallel: false,
@@ -33,11 +34,12 @@ export default defineConfig({
     // baseURL: 'http://localhost:3000',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    baseURL: 'https://e-zoo.by',
+    baseURL: process.env.BASE_URL,
     trace: 'on-first-retry',
     actionTimeout: 20000,
     navigationTimeout: 20000,
     headless: process.env.CI ? true : false,
+    storageState: 'auth/user.json',
   },
 
   /* Configure projects for major browsers */

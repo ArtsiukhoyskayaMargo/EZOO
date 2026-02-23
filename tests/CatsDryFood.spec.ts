@@ -4,7 +4,6 @@ import { test  } from '../testFixtures/fixtures';
 
 test.beforeEach(async ({ pageManager }) => {
   await pageManager.homePage.goto();
-  await pageManager.homePage.acceptCookies();
   await pageManager.homePage.openCategoryMenu('cat');
   await pageManager.homePage.openMenuItem('/catalog/koshki/korm/sukhoy-korm/');
   await pageManager.catalogPage.filterBy('Royal Canin');
