@@ -12,7 +12,7 @@ dotenv.config();
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  globalSetup: './auth/login.setup.ts',
+  //globalSetup: './auth/login.setup.ts',
   testDir: './tests',
   /* Run tests in files in parallel */
   fullyParallel: false,
@@ -39,15 +39,24 @@ export default defineConfig({
     actionTimeout: 20000,
     navigationTimeout: 20000,
     headless: process.env.CI ? true : false,
-    storageState: 'auth/user.json',
+    //storageState: 'setup-cookies/user.json',
   },
 
   /* Configure projects for major browsers */
   projects: [
     {
-      name: 'chromium',
+      name: "acceptCookies",
+      testDir: './setup-cookies',
       use: { ...devices['Desktop Chrome'] },
+      testMatch: 'cookies.setup.ts',
     },
+    {
+      name: 'chromium',
+      dependencies: ['acceptCookies'],
+      use: { ...devices['Desktop Chrome'],  storageState: 'setup-cookies/user.json'},
+  },
+],
+  
 
 /*     {
       name: 'firefox',
@@ -78,7 +87,6 @@ export default defineConfig({
     //   name: 'Google Chrome',
     //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
     // },
-  ],
 
   /* Run your local dev server before starting the tests */
   // webServer: {
