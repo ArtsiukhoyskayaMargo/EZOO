@@ -7,8 +7,4 @@ export class HomePage extends BasePage {
   constructor(page: Page) {
     super(page);
   }
-
-  async goto() {
-    await this.page.goto('/');
-  }
 }

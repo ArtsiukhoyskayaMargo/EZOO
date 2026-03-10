@@ -38,6 +38,8 @@ export class CatalogPage extends BasePage {
   }
 
   async isFilteredBy(name: string) {
+    await expect(this.firstProductTitle).toContainText(name);
+
     const titles = await this.productTitles.allTextContents();
     for (const title of titles) {
     expect(title).toContain(name);
