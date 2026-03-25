@@ -4,7 +4,7 @@ import { BasePage } from './BasePage';
 export class CartPage extends BasePage {
   readonly page: Page;
   readonly cartItemContainerByName: Function;
-  
+
   constructor(page: Page) {
     super(page);
     this.page = page;
@@ -14,4 +14,8 @@ export class CartPage extends BasePage {
   async getItemPrice (itemName: string): Promise<string> {
     return this.cartItemContainerByName(itemName).locator('[class*="product-basket__price-total"]').innerText()
   }
+
+  async getCartItemCount(itemName: string): Promise<string> {
+    return this.cartItemContainerByName(itemName).locator('[class="offer-count-input"]').inputValue();
+ }
 }

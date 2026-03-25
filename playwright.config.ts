@@ -54,7 +54,15 @@ export default defineConfig({
       name: 'chromium',
       dependencies: ['acceptCookies'],
       use: { ...devices['Desktop Chrome'],  storageState: 'setup-cookies/user.json'},
-  },
+    },
+    {
+      name: 'api',
+      testDir: './tests-api',
+      use: {
+        baseURL: process.env.BASE_URL,
+        storageState: { cookies: [], origins: [] },
+      }
+    }
 ],
   
 

@@ -12,6 +12,8 @@ export class CatalogPage extends BasePage {
   readonly productPrice: Locator;
   readonly filterCheckboxByName: Function;
   readonly firstAddToCart: Locator;
+  readonly productCountInput : Locator;
+  readonly addOneItem: Locator;
   readonly cartButton: Locator;
 
   
@@ -24,6 +26,9 @@ export class CatalogPage extends BasePage {
     this.productTitles = this.page.locator('[class*="product viewed"]').locator('[class*="product__info"] p.h4');
     this.productPrice = this.firstProductCard.locator('[class*="price-block"]');
     this.filterCheckboxByName = (name: string) => page.locator(`.form-group :text-is("${name}")`);
+    this.addOneItem = this.firstProductCard.locator('[class*="plus change_offer_data"]');
+    this.productCountInput = this.firstProductCard.locator('[class="offer-count-input-catalog"]');
+    
 
     this.firstAddToCart = this.firstProductCard.locator('[class*="product__basket-action"]:has-text("В корзину")');
     this.cartButton = page.locator('[class="name"]:has-text("Корзина")');
