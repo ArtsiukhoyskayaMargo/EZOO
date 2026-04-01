@@ -58,10 +58,6 @@ export default defineConfig({
     {
       name: 'api',
       testDir: './tests-api',
-      use: {
-        baseURL: process.env.BASE_URL,
-        storageState: { cookies: [], origins: [] },
-      }
     }
 ],
   
