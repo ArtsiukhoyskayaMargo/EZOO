@@ -6,12 +6,12 @@ import { expect } from '@playwright/test';
 export class CatalogPage extends BasePage {
   readonly page: Page;
   readonly deliveryOption: Function;
-  readonly firstProductCard: Locator;
-  readonly firstProductTitle: Function;
+  //readonly firstProductCard: Locator;
+  readonly productTitle: Function;
   readonly productTitles: Function;
-  readonly firstProductPrice: Locator;
+  readonly productPrice: Function;
   readonly filterCheckboxByName: Function;
-  readonly firstAddToCart: Locator;
+  readonly AddToCart: Function;
   readonly productCountInput : Function;
   readonly addOneItemToCard: Function;
   readonly cartButton: Locator;
@@ -22,18 +22,17 @@ export class CatalogPage extends BasePage {
     super(page);
     this.page = page;
     this.deliveryOption = (option: string) => page.locator(`[class="choose-user-delivery-type "]:has-text("${option}")`);
-    this.firstProductCard = page.locator('[class*="product viewed"]').nth(0);
     this.productCard = (index: number) => page.locator('[class*="product viewed"]').nth(index);
-    this.firstProductTitle =  (index: number) => this.firstProductCard.locator('[class*="product__info"] p[class=h4]');
-    this.productTitles = (index: number) => page.locator('[class*="product viewed"]').locator('[class*="product__info"] p.h4');
-    this.firstProductPrice = this.firstProductCard.locator('[class*="price-block"]');
+    this.productTitle =  (index: number) => this.productCard(index).locator('[class*="product__info"] p[class=h4]');
+    this.productTitles = () => page.locator('[class*="product viewed"]').locator('[class*="product__info"] p.h4');
+    this.productPrice = (index: number) => this.productCard(index).locator('[class*="price-block"]');
     this.filterCheckboxByName = (name: string) => page.locator(`.form-group :text-is("${name}")`);
-    this.addOneItemToCard= (index: number) => this.firstProductCard.locator('[class*="basket-action-counter--plus"]');
-    this.productCountInput = (index: number) => this.firstProductCard.locator('[class="offer-count-input-catalog"]');
+    this.addOneItemToCard= (index: number) => this.productCard(index).locator('[class*="basket-action-counter--plus"]');
+    this.productCountInput = (index: number) => this.productCard(index).locator('[class="offer-count-input-catalog"]');
     
 
-    this.firstAddToCart = this.firstProductCard.locator('[class*="product__basket-action"]:has-text("В корзину")');
-    this.cartButton = page.locator('[class="name"]:has-text("Корзина")');
+    this.AddToCart = (index: number) => this.productCard(index).locator('[class*="product__basket-action"]:has-text("В корзину")');
+    this.cartButton =  page.locator('[class="name"]:has-text("Корзина")');
   }
 
   async selectDeliveryOption(option: string) {
@@ -45,7 +44,7 @@ export class CatalogPage extends BasePage {
   }
 
   async isFilteredBy(name: string) {
-    await expect(this.firstProductTitle(0)).toContainText(name);
+    await expect(this.productCard(0)).toContainText(name);
 
     const titles = await this.productTitles().allTextContents();
     for (const title of titles) {
@@ -55,12 +54,12 @@ export class CatalogPage extends BasePage {
 
   
   async addFirstFilteredProductToCart(index: number): Promise<{ title: string, price: string }> {
-    const title = await this.firstProductTitle(0).innerText();
+    const title = await this.productTitle(index).innerText();
 
-    const rawPrice = await this.firstProductPrice.innerText();
+    const rawPrice = await this.productPrice(index).innerText();
     const price = normalizePrice(rawPrice);
  
-    await this.firstAddToCart.click();
+    await this.AddToCart(index).click();
     return { title, price };
   }
 }

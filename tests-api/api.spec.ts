@@ -1,8 +1,9 @@
 import { test } from '../testFixtures/fixtures';
 import { expect } from '@playwright/test';
+import { apiPaths, breedIds } from '../appConstants/appConstants';
 
 test('01 Should perform a GET request and validate the response', async ({ apiClient }) => {
-  const responseData = await apiClient.get<{ id: string; url: string; width: number; height: number }[]>('images/search');
+  const responseData = await apiClient.get<{ id: string; url: string; width: number; height: number }[]>(apiPaths.imagesSearch);
 
   expect(responseData).toBeTruthy();
   expect(responseData).toHaveLength(1);
@@ -15,7 +16,7 @@ test('01 Should perform a GET request and validate the response', async ({ apiCl
 });
 
 test('02 Should validate all 10 cat images in response', async ({ apiClient }) => {
-  const responseData = await apiClient.get<{ id: string; url: string; width: number; height: number }[]>('images/search', { limit: 10 });
+  const responseData = await apiClient.get<{ id: string; url: string; width: number; height: number }[]>(apiPaths.imagesSearch, { limit: 10 });
 
   expect(responseData).toBeTruthy();
   expect(responseData).toHaveLength(10);
@@ -30,9 +31,9 @@ test('02 Should validate all 10 cat images in response', async ({ apiClient }) =
   }
 });
 
-['abys', 'beng'].forEach((breedId) => {
+[breedIds.abyssinian, breedIds.bengal].forEach((breedId) => {
   test(`03 GET images/search for breed ${breedId} returns valid cat image`, async ({ apiClient }) => {
-    const responseData = await apiClient.get<{ id: string; url: string; width: number; height: number }[]>('images/search', { breed_ids: breedId });
+    const responseData = await apiClient.get<{ id: string; url: string; width: number; height: number }[]>(apiPaths.imagesSearch, { breed_ids: breedId });
 
     expect(responseData).toBeTruthy();
     expect(responseData).toHaveLength(1);

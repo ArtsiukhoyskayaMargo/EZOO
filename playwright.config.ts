@@ -24,7 +24,10 @@ export default defineConfig({
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : 1,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: 'html',
+  reporter: [
+    ['html', { outputFolder: 'playwright-report', open: 'never' }],
+    ['allure-playwright', { outputFolder: 'allure-results', detail: true, suiteTitle: false }],
+  ],
   expect: {
     timeout: 20000,
   },
@@ -36,6 +39,8 @@ export default defineConfig({
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     baseURL: process.env.BASE_URL,
     trace: 'on-first-retry',
+    video: 'off',
+    screenshot: 'only-on-failure',
     actionTimeout: 20000,
     navigationTimeout: 20000,
     headless: process.env.CI ? true : false,

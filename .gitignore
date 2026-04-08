@@ -1,9 +1,13 @@
 
 # Playwright
 node_modules/
-/test-results/
-/playwright-report/
-/blob-report/
-/playwright/.cache/
-/setup-cookies/user.json
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+setup-cookies/user.json
 .env
+
+# Allure
+allure-results/
+allure-report/
