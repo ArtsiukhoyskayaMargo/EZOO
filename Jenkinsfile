@@ -1,9 +1,14 @@
 pipeline {
-    agent {
-        docker {
-            image 'mcr.microsoft.com/playwright:v1.50.0-jammy'
-            args '-u root'
-        }
+    agent any
+
+    options {
+        skipDefaultCheckout(true)
+        timestamps()
+    }
+
+    environment {
+        DOCKER_IMAGE = 'mcr.microsoft.com/playwright:v1.50.0-jammy'
+        CONTAINER_WORKDIR = '/work'
     }
 
     stages {
@@ -14,16 +19,33 @@ pipeline {
             }
         }
 
-        stage('Install') {
+        stage('Docker Info') {
             steps {
-                sh 'npm ci'
+                bat '''
+                    docker version
+                    docker pull %DOCKER_IMAGE%
+                '''
             }
         }
 
-        stage('Test') {
+        stage('Run Playwright Tests in Docker') {
             steps {
-                sh 'npx playwright test'
+                bat '''
+                    docker run --rm ^
+                      -v "%WORKSPACE%:%CONTAINER_WORKDIR%" ^
+                      -w %CONTAINER_WORKDIR% ^
+                      %DOCKER_IMAGE% ^
+                      bash -lc "node -v && npm -v && npm ci && npx playwright test"
+                '''
             }
+        }
+    }
+
+    post {
+        always {
+            archiveArtifacts artifacts: 'playwright-report/**', allowEmptyArchive: true
+            archiveArtifacts artifacts: 'test-results/**', allowEmptyArchive: true
+            archiveArtifacts artifacts: 'allure-results/**', allowEmptyArchive: true
         }
     }
 }
