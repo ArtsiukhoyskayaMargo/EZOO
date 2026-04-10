@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    environment {
+        PLAYWRIGHT_BROWSERS_PATH = 'C:\\ProgramData\\Jenkins\\playwright-browsers'
+    }
+
     stages {
         stage('Checkout') {
             steps {
