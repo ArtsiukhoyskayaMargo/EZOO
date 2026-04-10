@@ -24,9 +24,9 @@ pipeline {
 
         stage('Prepare Docker volume') {
             steps {
-                bat '''
-                    docker volume rm ezoo_node_modules 2>nul
-                '''
+                script {
+                    bat(returnStatus: true, script: 'docker volume rm ezoo_node_modules')
+                }
             }
         }
 
