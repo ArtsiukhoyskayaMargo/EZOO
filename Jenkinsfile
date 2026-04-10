@@ -51,10 +51,10 @@ pipeline {
                 bat '''
                     docker run --rm ^
                       -u root ^
+                      --env-file "%WORKSPACE%\\.env" ^
                       -v "%WORKSPACE%:/work" ^
                       -v ezoo_node_modules:/work/node_modules ^
                       -w /work ^
-                      --env-file /work/.env ^
                       %DOCKER_IMAGE% ^
                       bash -lc "node -v && npm -v && npm ci && npx playwright test"
                 '''
