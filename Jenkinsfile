@@ -1,8 +1,9 @@
 pipeline {
-    agent any
-
-    environment {
-        PLAYWRIGHT_BROWSERS_PATH = 'C:\\ProgramData\\Jenkins\\playwright-browsers'
+    agent {
+        docker {
+            image 'mcr.microsoft.com/playwright:v1.50.0-jammy'
+            args '-u root'
+        }
     }
 
     stages {
@@ -15,14 +16,13 @@ pipeline {
 
         stage('Install') {
             steps {
-                bat 'npm ci'
-                bat 'npx playwright install --with-deps'
+                sh 'npm ci'
             }
         }
 
         stage('Test') {
             steps {
-                bat 'npx playwright test'
+                sh 'npx playwright test'
             }
         }
     }
