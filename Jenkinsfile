@@ -7,7 +7,7 @@ pipeline {
     }
 
     environment {
-        DOCKER_IMAGE = 'mcr.microsoft.com/playwright:v1.50.0-jammy'
+        DOCKER_IMAGE = 'mcr.microsoft.com/playwright:v1.58.0-jammy'
     }
 
     stages {
@@ -54,6 +54,7 @@ pipeline {
                       -v "%WORKSPACE%:/work" ^
                       -v ezoo_node_modules:/work/node_modules ^
                       -w /work ^
+                      --env-file /work/.env ^
                       %DOCKER_IMAGE% ^
                       bash -lc "node -v && npm -v && npm ci && npx playwright test"
                 '''
