@@ -5,7 +5,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 git branch: 'main',
-                    url: 'https://github.com/твой-username/ezoo-playwright.git'
+                    url: 'https://github.com/ArtsiukhoyskayaMargo/EZOO.git'
             }
         }
 
