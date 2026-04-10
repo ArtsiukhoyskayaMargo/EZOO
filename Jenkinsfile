@@ -51,6 +51,7 @@ pipeline {
                 bat '''
                     docker run --rm ^
                       -u root ^
+                      -e CI=true ^
                       --env-file "%WORKSPACE%\\.env" ^
                       -v "%WORKSPACE%:/work" ^
                       -v ezoo_node_modules:/work/node_modules ^
