@@ -8,10 +8,28 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = 'mcr.microsoft.com/playwright:v1.50.0-jammy'
-        CONTAINER_WORKDIR = '/work'
     }
 
     stages {
+        stage('Clean workspace') {
+            steps {
+                bat '''
+                    if exist node_modules rmdir /s /q node_modules
+                    if exist playwright-report rmdir /s /q playwright-report
+                    if exist test-results rmdir /s /q test-results
+                    if exist allure-results rmdir /s /q allure-results
+                '''
+            }
+        }
+
+        stage('Prepare Docker volume') {
+            steps {
+                bat '''
+                    docker volume rm ezoo_node_modules 2>nul
+                '''
+            }
+        }
+
         stage('Checkout') {
             steps {
                 git branch: 'main',
@@ -28,12 +46,14 @@ pipeline {
             }
         }
 
-        stage('Run Playwright Tests in Docker') {
+        stage('Run Playwright tests in Docker') {
             steps {
                 bat '''
                     docker run --rm ^
-                      -v "%WORKSPACE%:%CONTAINER_WORKDIR%" ^
-                      -w %CONTAINER_WORKDIR% ^
+                      -u root ^
+                      -v "%WORKSPACE%:/work" ^
+                      -v ezoo_node_modules:/work/node_modules ^
+                      -w /work ^
                       %DOCKER_IMAGE% ^
                       bash -lc "node -v && npm -v && npm ci && npx playwright test"
                 '''
