@@ -18,6 +18,7 @@ pipeline {
                     if exist playwright-report rmdir /s /q playwright-report
                     if exist test-results rmdir /s /q test-results
                     if exist allure-results rmdir /s /q allure-results
+                    if exist allure-report rmdir /s /q allure-report
                 '''
             }
         }
@@ -59,6 +60,16 @@ pipeline {
                       %DOCKER_IMAGE% ^
                       bash -lc "node -v && npm -v && npm ci && npx playwright test"
                 '''
+            }
+        }
+
+        stage('Publish Allure Report') {
+            steps {
+                allure([
+                    includeProperties: false,
+                    jdk: '',
+                    results: [[path: 'allure-results']]
+                ])
             }
         }
     }
