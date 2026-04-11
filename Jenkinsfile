@@ -49,17 +49,19 @@ pipeline {
 
         stage('Run Playwright tests in Docker') {
             steps {
-                bat '''
-                    docker run --rm ^
-                      -u root ^
-                      -e CI=true ^
-                      --env-file "%WORKSPACE%\\.env" ^
-                      -v "%WORKSPACE%:/work" ^
-                      -v ezoo_node_modules:/work/node_modules ^
-                      -w /work ^
-                      %DOCKER_IMAGE% ^
-                      bash -lc "node -v && npm -v && npm ci && npx playwright test"
-                '''
+                script {
+                    bat(returnStatus: true, script: '''
+                        docker run --rm ^
+                          -u root ^
+                          -e CI=true ^
+                          --env-file "%WORKSPACE%\\.env" ^
+                          -v "%WORKSPACE%:/work" ^
+                          -v ezoo_node_modules:/work/node_modules ^
+                          -w /work ^
+                          %DOCKER_IMAGE% ^
+                          bash -lc "node -v && npm -v && npm ci && npx playwright test"
+                    ''')
+                }
             }
         }
     }
@@ -68,7 +70,7 @@ pipeline {
         always {
             allure([
                 includeProperties: false,
-                jdk: '',
+                jdk: 'Allure',
                 results: [[path: 'allure-results']]
             ])
             archiveArtifacts artifacts: 'playwright-report/**', allowEmptyArchive: true
