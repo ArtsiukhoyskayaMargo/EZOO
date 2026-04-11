@@ -52,7 +52,7 @@ test('03 Verify multiple items in the cart', async ({ pageManager }) => {
 [brands.royalCanin, brands.proPlan].forEach(({ filterName, uiName }) => {
   test(`04 The filter was applied for brand ${uiName}`, async ({ pageManager }) => {
     await pageManager.catalogPage.filterBy(filterName);
-    await pageManager.catalogPage.isFilteredBy(uiName);
+    await pageManager.catalogPage.isFilteredBy(uiName+);
   });
 });
 
