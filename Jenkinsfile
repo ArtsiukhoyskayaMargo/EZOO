@@ -11,14 +11,10 @@ pipeline {
     }
 
     stages {
-        stage('Clean workspace') {
+        stage('Checkout') {
             steps {
-                bat '''
-                    if exist playwright-report rmdir /s /q playwright-report
-                    if exist test-results rmdir /s /q test-results
-                    if exist allure-results rmdir /s /q allure-results
-                    if exist allure-report rmdir /s /q allure-report
-                '''
+                git branch: 'main',
+                    url: 'https://github.com/ArtsiukhoyskayaMargo/EZOO.git'
             }
         }
 
@@ -27,13 +23,6 @@ pipeline {
                 script {
                     bat(returnStatus: true, script: 'docker volume rm ezoo_node_modules')
                 }
-            }
-        }
-
-        stage('Checkout') {
-            steps {
-                git branch: 'main',
-                    url: 'https://github.com/ArtsiukhoyskayaMargo/EZOO.git'
             }
         }
 
