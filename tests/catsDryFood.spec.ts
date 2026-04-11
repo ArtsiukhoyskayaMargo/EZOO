@@ -52,7 +52,15 @@ test('03 Verify multiple items in the cart', async ({ pageManager }) => {
 [brands.royalCanin, brands.proPlan].forEach(({ filterName, uiName }) => {
   test(`04 The filter was applied for brand ${uiName}`, async ({ pageManager }) => {
     await pageManager.catalogPage.filterBy(filterName);
-    await pageManager.catalogPage.isFilteredBy(uiName+);
+    await pageManager.catalogPage.isFilteredBy(uiName);
   });
+
+  test('05 The filter was applied part 2', async ({ pageManager }) => {
+  await pageManager.catalogPage.filterBy(brands.royalCanin.filterName);
+  await pageManager.catalogPage.isFilteredBy(brands.royalCanin.uiName);
+  
+  // специально падаем
+  await expect(pageManager.catalogPage.cartButton).toHaveText('это точно не текст корзины');
+});
 });
 
