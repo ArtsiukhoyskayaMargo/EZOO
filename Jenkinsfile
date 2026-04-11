@@ -14,7 +14,6 @@ pipeline {
         stage('Clean workspace') {
             steps {
                 bat '''
-                    if exist node_modules rmdir /s /q node_modules
                     if exist playwright-report rmdir /s /q playwright-report
                     if exist test-results rmdir /s /q test-results
                     if exist allure-results rmdir /s /q allure-results
