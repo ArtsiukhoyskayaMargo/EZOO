@@ -1,6 +1,7 @@
 import { test } from '../testFixtures/fixtures';
 import { expect } from '@playwright/test';
 import { apiPaths, breedIds } from '../appConstants/appConstants';
+import '../utils/allure-trace-attach';
 
 test('01 Should perform a GET request and validate the response', async ({ apiClient }) => {
   const responseData = await apiClient.get<{ id: string; url: string; width: number; height: number }[]>(apiPaths.imagesSearch);

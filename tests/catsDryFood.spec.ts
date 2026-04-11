@@ -2,6 +2,7 @@ import { expect } from '@playwright/test';
 import { normalizePrice } from '../utils/helpers';
 import { test  } from '../testFixtures/fixtures';
 import { brands, deliveryMethods, pathes } from '../appConstants/appConstants';
+import '../utils/allure-trace-attach';
 
 test.beforeEach(async ({ pageManager }) => {
   await pageManager.homePage.goto();
