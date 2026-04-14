@@ -7,7 +7,7 @@ pipeline {
     }
 
     environment {
-        DOCKER_IMAGE = 'node:18-slim'  // Используем Node.js образ без Playwright
+        DOCKER_IMAGE = 'node:18' 
     }
 
     stages {
