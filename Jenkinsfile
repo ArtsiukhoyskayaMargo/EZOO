@@ -7,7 +7,7 @@ pipeline {
     }
 
     environment {
-        DOCKER_IMAGE = 'node:18'
+        DOCKER_IMAGE = 'node:20-bookworm'
     }
 
     stages {
