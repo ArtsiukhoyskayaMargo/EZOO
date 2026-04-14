@@ -47,7 +47,7 @@ pipeline {
                           -v ezoo_node_modules:/work/node_modules ^
                           -w /work ^
                           %DOCKER_IMAGE% ^
-                          bash -lc "node -v && npm -v && npm ci && npm install && npm install playwright && playwright install && npx playwright test"
+                          bash -lc "node -v && npm -v && npm ci && npm install --unsafe-perm && npm install playwright && playwright install && npx playwright test"
                     ''')
                 }
             }
