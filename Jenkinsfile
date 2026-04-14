@@ -56,7 +56,8 @@ pipeline {
             allure([
                 includeProperties: false,
                 jdk: 'Allure',
-                results: [[path: 'allure-results']]
+                results: [[path: 'allure-results']],
+                reportBuildPolicy: 'ALWAYS'
             ])
             archiveArtifacts artifacts: 'playwright-report/**', allowEmptyArchive: true
             archiveArtifacts artifacts: 'test-results/**', allowEmptyArchive: true
