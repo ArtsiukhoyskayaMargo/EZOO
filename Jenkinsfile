@@ -7,7 +7,7 @@ pipeline {
     }
 
     environment {
-        DOCKER_IMAGE = 'mcr.microsoft.com/playwright:v1.58.0-jammy'
+        DOCKER_IMAGE = 'node:18-slim'  
     }
 
     stages {
@@ -35,7 +35,7 @@ pipeline {
             }
         }
 
-        stage('Run Playwright tests in Docker') {
+        stage('Run Tests in Docker') {
             steps {
                 script {
                     bat(returnStatus: true, script: '''
@@ -47,7 +47,7 @@ pipeline {
                           -v ezoo_node_modules:/work/node_modules ^
                           -w /work ^
                           %DOCKER_IMAGE% ^
-                          bash -lc "node -v && npm -v && npm ci && npx playwright test"
+                          bash -lc "node -v && npm -v && npm ci && npm install && npm install playwright && playwright install && npx playwright test"
                     ''')
                 }
             }
@@ -56,10 +56,10 @@ pipeline {
 
     post {
         always {
-            allure([
-                includeProperties: false,
-                jdk: 'Allure',
-                results: [[path: 'allure-results']]
+            allure([ 
+                includeProperties: false, 
+                jdk: 'Allure', 
+                results: [[path: 'allure-results']] 
             ])
             archiveArtifacts artifacts: 'playwright-report/**', allowEmptyArchive: true
             archiveArtifacts artifacts: 'test-results/**', allowEmptyArchive: true
