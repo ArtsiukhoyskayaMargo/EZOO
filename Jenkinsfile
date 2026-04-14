@@ -7,7 +7,7 @@ pipeline {
     }
 
     environment {
-        DOCKER_IMAGE = 'node:18-slim'  
+        DOCKER_IMAGE = 'node:18-slim'  // Используем Node.js образ без Playwright
     }
 
     stages {
@@ -35,19 +35,18 @@ pipeline {
             }
         }
 
-        stage('Install Dependencies and Run Tests in Docker') {
+        stage('Run Tests in Docker') {
             steps {
                 script {
                     bat(returnStatus: true, script: '''
                         docker run --rm ^
-                          -u root ^
                           -e CI=true ^
                           --env-file "%WORKSPACE%\\.env" ^
                           -v "%WORKSPACE%:/work" ^
                           -v ezoo_node_modules:/work/node_modules ^
                           -w /work ^
                           %DOCKER_IMAGE% ^
-                          bash -lc "node -v && npm -v && npm ci && npm install --unsafe-perm && npm install playwright && playwright install && npx playwright test"
+                          bash -lc "chmod -R 777 /work && node -v && npm -v && npm ci && npm install --unsafe-perm && npm install playwright && playwright install && npx playwright test"
                     ''')
                 }
             }
@@ -56,10 +55,10 @@ pipeline {
 
     post {
         always {
-            allure([
-                includeProperties: false,
-                jdk: 'Allure',
-                results: [[path: 'allure-results']]
+            allure([ 
+                includeProperties: false, 
+                jdk: 'Allure', 
+                results: [[path: 'allure-results']] 
             ])
             archiveArtifacts artifacts: 'playwright-report/**', allowEmptyArchive: true
             archiveArtifacts artifacts: 'test-results/**', allowEmptyArchive: true
