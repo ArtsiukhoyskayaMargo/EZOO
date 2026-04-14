@@ -59,9 +59,7 @@ pipeline {
                 results: [[path: 'allure-results']],
                 reportBuildPolicy: 'ALWAYS'
             ])
-            archiveArtifacts artifacts: 'playwright-report/**', allowEmptyArchive: true
-            archiveArtifacts artifacts: 'test-results/**', allowEmptyArchive: true
-            archiveArtifacts artifacts: 'allure-results/**', allowEmptyArchive: true
+            archiveArtifacts artifacts: 'test-results/**/*trace.zip', allowEmptyArchive: true
         }
     }
 }
