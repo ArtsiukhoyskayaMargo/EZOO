@@ -35,7 +35,7 @@ pipeline {
             }
         }
 
-        stage('Run Tests in Docker') {
+        stage('Install Dependencies and Run Tests in Docker') {
             steps {
                 script {
                     bat(returnStatus: true, script: '''
@@ -56,10 +56,10 @@ pipeline {
 
     post {
         always {
-            allure([ 
-                includeProperties: false, 
-                jdk: 'Allure', 
-                results: [[path: 'allure-results']] 
+            allure([
+                includeProperties: false,
+                jdk: 'Allure',
+                results: [[path: 'allure-results']]
             ])
             archiveArtifacts artifacts: 'playwright-report/**', allowEmptyArchive: true
             archiveArtifacts artifacts: 'test-results/**', allowEmptyArchive: true
