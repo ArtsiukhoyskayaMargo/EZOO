@@ -35,6 +35,7 @@ pipeline {
                           -e CI=true ^
                           --env-file "%WORKSPACE%\\.env" ^
                           -v "%WORKSPACE%:/work" ^
+                          -v "%WORKSPACE%\\allure-results:/work/allure-results" ^
                           -v ezoo_node_modules:/work/node_modules ^
                           -v ezoo_pw_browsers:/root/.cache/ms-playwright ^
                           -w /work ^
