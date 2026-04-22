@@ -23,7 +23,7 @@ pipeline {
 
         stage('Prepare Docker volume') {
             when {
-                branch 'main'
+                expression { env.GIT_BRANCH == 'origin/main' || env.GIT_BRANCH == 'main' }
             }
             steps {
                 script {
@@ -34,7 +34,7 @@ pipeline {
 
         stage('Run Tests in Docker') {
             when {
-                branch 'main'
+                expression { env.GIT_BRANCH == 'origin/main' || env.GIT_BRANCH == 'main' }
             }
             steps {
                 script {
@@ -53,7 +53,7 @@ pipeline {
     post {
         always {
             script {
-                if (env.BRANCH_NAME == 'main' || (env.GIT_BRANCH && env.GIT_BRANCH.contains('main'))) {
+                if (fileExists('allure-results')) {
                     allure([
                         includeProperties: false,
                         jdk: 'Allure',
