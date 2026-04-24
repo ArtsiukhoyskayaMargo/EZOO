@@ -62,5 +62,6 @@ test('05 The filter was applied - intentional fail', async ({ pageManager }) => 
   // специально падаем
   await expect(pageManager.catalogPage.cartButton).toHaveText('это точно не текст корзины');
   await expect(pageManager.catalogPage.cartButton).toHaveText('это точно не текст корзины');
+  await expect(pageManager.catalogPage.cartButton).toHaveText('это точно не текст корзины');
 });
 
