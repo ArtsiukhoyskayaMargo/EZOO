@@ -59,14 +59,5 @@ test('03 Verify multiple items in the cart', async ({ pageManager }) => {
 test('05 The filter was applied - intentional fail', async ({ pageManager }) => {
   await pageManager.catalogPage.filterBy(brands.royalCanin.filterName);
   await pageManager.catalogPage.isFilteredBy(brands.royalCanin.uiName);
-  // специально падаем
-  await expect(pageManager.catalogPage.cartButton).toHaveText('это точно не текст корзины');
-  await expect(pageManager.catalogPage.cartButton).toHaveText('это точно не текст корзины');
-  await expect(pageManager.catalogPage.cartButton).toHaveText('это точно не текст корзины');
-  await expect(pageManager.catalogPage.cartButton).toHaveText('это точно не текст корзины');
-  await expect(pageManager.catalogPage.cartButton).toHaveText('это точно не текст корзины');
-  await expect(pageManager.catalogPage.cartButton).toHaveText('это точно не текст корзины');
-  await expect(pageManager.catalogPage.cartButton).toHaveText('это точно не текст корзины');
-  await expect(pageManager.catalogPage.cartButton).toHaveText('это точно не текст корзины');
 });
 
